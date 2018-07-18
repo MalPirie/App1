@@ -1,0 +1,9 @@
+AU Current_account
+AU Chequing_account
+TC 0 20180707 Opening_balance 100
+TC 1 20180717 Paid_painters -30
+TC 2 20180717 Sainsbury's -20
+TC 3 20180716 Paid_plumber -12
+TU 1 _ Shopping -20
+TU 1 20180718 _ _
+TD 3

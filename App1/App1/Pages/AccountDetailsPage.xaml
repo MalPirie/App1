@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App1.Pages.AccountDetailsPage"
+             Title="{Binding Name}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Save" Command="{Binding SaveAccountCommand}" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout>
+            <StackLayout>
+                <StackLayout>
+                    <Label Text="Name" />
+                    <Entry Text="{Binding Name, Mode=TwoWay}" Keyboard="Text" Placeholder="Account name" />
+                    <Label Text="Balance" />
+                    <Entry Keyboard="Numeric" Text="{Binding Balance, Mode=TwoWay}" Placeholder="Opening balance" />
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
