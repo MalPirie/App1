@@ -8,7 +8,7 @@ namespace App1.Models
 {
     public class AccountRepository
     {
-        private string _path;
+        private readonly string _path;
         private List<Account> _accounts;
 
         public AccountRepository(string path = null)
@@ -29,15 +29,12 @@ namespace App1.Models
 
         public void DeleteAccount(Account account)
         {
-            if (_accounts.Remove(account))
+            if (!_accounts.Remove(account))
             {
-                var filename = MakeFilename(account.Id);
-                File.Move(filename, filename + ".delete");
+                return;
             }
-            else
-            {
-                Console.WriteLine($"Failed to remove {account.Id}");
-            }
+            var filename = MakeFilename(account.Id);
+            File.Move(filename, filename + ".delete");
         }
 
         public Account GetAccountById(Guid id)
@@ -58,7 +55,7 @@ namespace App1.Models
         private Account LoadAccount(Guid id)
         {
             var lines = File.ReadAllLines(MakeFilename(id));
-            var events = lines.Select(l => Parse(l));
+            var events = lines.Select(Parse);
             return new Account(id, events);
         }
 
@@ -79,11 +76,8 @@ namespace App1.Models
             return Path.Combine(_path, id.ToString("N"));
         }
 
-        private AccountEvent Parse(string line)
+        private static AccountEvent Parse(string line)
         {
-            // IEnumerable<Type> exporters = typeof(AccountEvent)
-            //     .Assembly.GetTypes()
-            //     .Where(t => t.IsSubclassOf(typeof(AccountEvent)) && !t.IsAbstract);
             var prefixTypeMap = new Dictionary<string, Type>()
             {
                 { "AU", typeof(AccountDescriptionUpdated) },

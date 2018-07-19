@@ -31,7 +31,7 @@ namespace App1.Utilities
             }
         }
 
-        [DebuggerNonUserCode]
+//        [DebuggerNonUserCode]
         public static void InvokeEventOptional<T>(T instance, object command)
         {
             MethodInfo info;

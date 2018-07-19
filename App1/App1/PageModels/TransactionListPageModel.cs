@@ -14,40 +14,41 @@ namespace App1.PageModels
         private readonly AccountRepository _repository;
         private readonly Account _account;
 
-        public TransactionListPageModel(Account account)
+        public TransactionListPageModel(AccountRepository repository, Account account)
         {
+            _repository = repository;
             _account = account;
             _dialog = new DialogService();
             _repository = new AccountRepository();
             
-            CreateTransactionCommand = new DelegateCommand(parm => Push(new TransactionDetailsPageModel(_account, null)));
+            CreateTransactionCommand = new DelegateCommand(parm => Navigation.Push(new TransactionDetailsPageModel(_repository, _account, null)));
             DeleteAccountCommand = new DelegateCommand(parm =>
             {
-                if (_dialog.ShowMessage("Delete Account", "Are you sure?", "Yes", "No"))
+                //var result = _dialog.ShowMessage("Delete Account", "Are you sure?", "Yes", "No");
+                //if (result.Result)
                 {
                     _repository.DeleteAccount(_account);
-                    Pop();
+                    Navigation.Pop();
                 }
             });
             DeleteTransactionCommand = new DelegateCommand(parm => 
             {
-                var transaction = parm as Transaction;
-                if (transaction != null)
+                if (parm is Transaction transaction)
                 {
-                    if (_dialog.ShowMessage("Delete Transaction", "Are you sure?", "Yes", "No"))
+                    var result = _dialog.ShowMessage("Delete Transaction", "Are you sure?", "Yes", "No");
+                    if (result.Result)
                     {
                         _account.DeleteTransaction(transaction);
                         _repository.SaveAccount(_account);
                     }
                 }
             });
-            EditAccountCommand = new DelegateCommand(parm => Push(new AccountDetailsPageModel(_account)));
+            EditAccountCommand = new DelegateCommand(parm => Navigation.Push(new AccountDetailsPageModel(_repository, _account)));
             EditTransactionCommand = new DelegateCommand(parm =>
             {
-                var transaction = parm as Transaction;
-                if (transaction != null)
+                if (parm is Transaction transaction)
                 {
-                    Push(new TransactionDetailsPageModel(_account, transaction));
+                    Navigation.Push(new TransactionDetailsPageModel(_repository, _account, transaction));
                 }
             });
         }
@@ -61,7 +62,7 @@ namespace App1.PageModels
             {
                 if (value != null)
                 {
-                    Push(new TransactionDetailsPageModel(_account, value));
+                    Navigation.Push(new TransactionDetailsPageModel(_repository, _account, value));
                     OnPropertyChanged();
                 }
             }

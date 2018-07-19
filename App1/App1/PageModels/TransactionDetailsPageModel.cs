@@ -12,8 +12,9 @@ namespace App1.PageModels
         private readonly Transaction _transaction;
         private readonly bool _isNewTransaction;
 
-        public TransactionDetailsPageModel(Account account, Transaction transaction)
+        public TransactionDetailsPageModel(AccountRepository repository, Account account, Transaction transaction)
         {
+            _repository = repository;
             _account = account;
             _transaction = transaction;
             _isNewTransaction = (transaction == null);
@@ -37,7 +38,7 @@ namespace App1.PageModels
                     _account.UpdateTransaction(_transaction, _timestamp, _description, _amount);
                 }
                 _repository.SaveAccount(_account);
-                Pop();
+                Navigation.Pop();
             });
         }
 

@@ -8,11 +8,12 @@ namespace App1.PageModels
 {
     public class AccountListPageModel : BasePageModel
     {
-        private AccountRepository _repository = new AccountRepository();
+        private readonly AccountRepository _repository;
 
-        public AccountListPageModel()
+        public AccountListPageModel(AccountRepository repository)
         {
-            CreateAccountCommand = new DelegateCommand(parm => Push(new AccountDetailsPageModel(null)));
+            _repository = repository;
+            CreateAccountCommand = new DelegateCommand(parm => Navigation.Push(new AccountDetailsPageModel(_repository, null)));
         }
 
         private ObservableCollection<Account> _accounts;
@@ -29,7 +30,7 @@ namespace App1.PageModels
             {
                 if (value != null)
                 {
-                    Push(new TransactionListPageModel(value));
+                    Navigation.Push(new TransactionListPageModel(_repository, value));
                     OnPropertyChanged();
                 }
             }

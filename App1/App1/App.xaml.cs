@@ -15,8 +15,7 @@ namespace App1
 		{
 			InitializeComponent();
 
-            var navigation = new NavigationService(new AccountListPageModel());
-            MainPage =  new NavigationPage(navigation.CurrentPage);
+            MainPage = NavigationService.Init(new AccountListPageModel(new AccountRepository()));
         }
 
         protected override void OnStart ()

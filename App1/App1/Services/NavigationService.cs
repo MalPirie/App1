@@ -9,40 +9,45 @@ namespace App1.Utilities
 {
     public class NavigationService
     {
-        private List<Page> _pages;
+        private NavigationService()
+        { }
 
-        public Page CurrentPage => _pages.LastOrDefault();
-
-        public NavigationService(BasePageModel model)
+        public static Page Init(BasePageModel model)
         {
-            _pages = new List<Page>();
-            BasePageModel.Navigation = this;
-            Push(model);
+            var navigation = new NavigationService();
+            var page = navigation.GetPage(model);
+            return new NavigationPage(page);
         }
 
         public void Pop()
         {
-            _pages.RemoveAt(_pages.Count - 1);
+            Application.Current.MainPage.Navigation.PopAsync();
         }
 
         public void Push(BasePageModel model)
         {
-            var pageTypeName = model.GetType().AssemblyQualifiedName.Replace("PageModel", "Page").Replace("ViewModel", "View");
-            var pageType = Type.GetType(pageTypeName);
-            var page = (ContentPage) Activator.CreateInstance(pageType);
-            page.Appearing += model.OnPageAppearing;
-            page.BindingContext = model;
-            _pages.Add(page);
-            
-            // https://docs.microsoft.com/en-us/dotnet/framework/wpf/advanced/weak-event-patterns
-            // page.OnAppearing += new WeakEventHandler<EventArgs>(PageAppearing).Handler;
-
-            //Application.Current.MainPage.Navigation.PushAsync(new PageModifyQty((Model)obj), false);
+            var page = GetPage(model);
+            Application.Current.MainPage.Navigation.PushAsync(page, false);
         }
         
         public void Remove(BasePageModel model)
         {
-            _pages.RemoveAll(p => p.BindingContext.Equals(model));
+            var page = Application.Current.MainPage.Navigation.NavigationStack.FirstOrDefault(p => p.BindingContext.Equals(model));
+            if (page != null)
+            {
+                Application.Current.MainPage.Navigation.RemovePage(page);
+            }
+        }
+
+        private Page GetPage(BasePageModel model)
+        {
+            model.Navigation = this;
+            var pageTypeName = model.GetType().AssemblyQualifiedName.Replace("PageModel", "Page").Replace("ViewModel", "View");
+            var pageType = Type.GetType(pageTypeName);
+            var page = (ContentPage)Activator.CreateInstance(pageType);
+            page.Appearing += model.OnPageAppearing;
+            page.BindingContext = model;
+            return page;
         }
     }
 }

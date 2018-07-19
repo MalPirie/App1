@@ -7,32 +7,32 @@ namespace App1.PageModels
 {
     public class AccountDetailsPageModel : BasePageModel
     {
-        private readonly AccountRepository _repository = new AccountRepository();
+        private readonly AccountRepository _repository;
         private readonly Account _account;
-        private readonly bool _isNewAccount;
 
-        public AccountDetailsPageModel(Account account)
+        public AccountDetailsPageModel(AccountRepository repository, Account account)
         {
+            _repository = repository;
             _account = account;
-            _isNewAccount = (account == null);
-            if (_isNewAccount)
+            var isNewAccount = (account == null);
+            if (isNewAccount)
             {
                 _description = "New account";
             }
 
             SaveAccountCommand = new DelegateCommand(parm =>
             {
-                if (_isNewAccount)
+                if (isNewAccount)
                 {
-                    Guid id = _repository.CreateAccount(_description);
-                    Push(new TransactionListPageModel(_repository.GetAccountById(id)));
-                    Remove();
+                    var id = _repository.CreateAccount(_description);
+                    Navigation.Push(new TransactionListPageModel(_repository, _repository.GetAccountById(id)));
+                    Navigation.Remove(this);
                 }
                 else
                 {
                     _account.UpdateDescription(_description);
                     _repository.SaveAccount(_account);
-                    Pop();
+                    Navigation.Pop();
                 }
             });
         }
