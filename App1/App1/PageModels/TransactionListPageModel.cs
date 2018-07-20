@@ -2,6 +2,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Xamarin.Forms;
 using App1.Models;
 using App1.Services;
 using App1.Utilities;
@@ -10,7 +11,6 @@ namespace App1.PageModels
 {
     public class TransactionListPageModel : BasePageModel
     {
-        private readonly DialogService _dialog;
         private readonly AccountRepository _repository;
         private readonly Account _account;
 
@@ -18,25 +18,25 @@ namespace App1.PageModels
         {
             _repository = repository;
             _account = account;
-            _dialog = new DialogService();
             _repository = new AccountRepository();
-            
+            var dialog = new DialogService();
+
             CreateTransactionCommand = new DelegateCommand(parm => Navigation.Push(new TransactionDetailsPageModel(_repository, _account, null)));
-            DeleteAccountCommand = new DelegateCommand(parm =>
+            DeleteAccountCommand = new DelegateCommand(async parm =>
             {
-                //var result = _dialog.ShowMessage("Delete Account", "Are you sure?", "Yes", "No");
-                //if (result.Result)
+                var result = await dialog.ShowMessage("Delete Account", "Are you sure?", "Yes", "No");
+                if (result)
                 {
                     _repository.DeleteAccount(_account);
                     Navigation.Pop();
                 }
             });
-            DeleteTransactionCommand = new DelegateCommand(parm => 
+            DeleteTransactionCommand = new DelegateCommand(async parm => 
             {
                 if (parm is Transaction transaction)
                 {
-                    var result = _dialog.ShowMessage("Delete Transaction", "Are you sure?", "Yes", "No");
-                    if (result.Result)
+                    var result = await dialog.ShowMessage("Delete Transaction", "Are you sure?", "Yes", "No");
+                    if (result)
                     {
                         _account.DeleteTransaction(transaction);
                         _repository.SaveAccount(_account);

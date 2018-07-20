@@ -10,11 +10,11 @@
             <StackLayout>
                 <StackLayout>
                     <Label Text="Timestamp" />
-                    <Entry Text="{Binding Timestamp, Mode=TwoWay}" Keyboard="Text" Placeholder="Date of transaction" />
+                    <DatePicker Date="{Binding Timestamp}" Format="yyyy-MM-dd" />
                     <Label Text="Description" />
                     <Entry Text="{Binding Description, Mode=TwoWay}" Keyboard="Text" Placeholder="Description of transaction" />
                     <Label Text="Amount" />
-                    <Entry Text="{Binding Amount, Mode=TwoWay}" Keyboard="Text" Placeholder="Amount of transaction" />
+                    <Entry Text="{Binding Amount, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Amount of transaction" />
                 </StackLayout>
             </StackLayout>
         </StackLayout>

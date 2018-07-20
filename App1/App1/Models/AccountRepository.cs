@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using App1.Models.Events;
+using Xamarin.Forms.Internals;
 
 namespace App1.Models
 {
@@ -16,6 +18,7 @@ namespace App1.Models
             _path = path ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Data");
             Directory.CreateDirectory(_path);
             LoadAccounts();
+            //ClearAccounts();
         }
 
         public Guid CreateAccount(string description)
@@ -52,6 +55,18 @@ namespace App1.Models
             account.ClearUncommittedEvents();
         }
 
+        private void ClearAccounts()
+        {
+            var files = Directory.EnumerateFiles(_path);
+            foreach (var file in files)
+            {
+                if (Guid.TryParse(Path.GetFileName(file), out var id))
+                {
+                    File.Delete(file);
+                }
+            }
+        }
+
         private Account LoadAccount(Guid id)
         {
             var lines = File.ReadAllLines(MakeFilename(id));
@@ -64,6 +79,7 @@ namespace App1.Models
             _accounts = new List<Account>();
             foreach (var file in Directory.EnumerateFiles(_path))
             {
+                Debug.WriteLine(file);
                 if (Guid.TryParse(Path.GetFileName(file), out var id))
                 {
                     _accounts.Add(LoadAccount(id));

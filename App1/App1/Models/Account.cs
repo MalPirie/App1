@@ -8,8 +8,8 @@ namespace App1.Models
 {
     public class Account : Aggregate<AccountEvent>, IEquatable<Account>
     {
-        private int _nextTransactionId = 0;
-        private List<Transaction> _transactions = new List<Transaction>();
+        private int _lastTransactionId = 0;
+        private readonly List<Transaction> _transactions = new List<Transaction>();
 
         public Account()
         {
@@ -29,15 +29,15 @@ namespace App1.Models
 
         public int CreateTransaction(DateTime timestamp, string description, decimal amount)
         {
-            int transactionId = _nextTransactionId++;
+            int id = ++_lastTransactionId;
             Apply(new TransactionCreated()
             {
-                Id = transactionId,
+                Id = id,
                 Timestamp = timestamp,
-                Description = description ?? $"Transaction {transactionId:00000}",
+                Description = description ?? $"Transaction {id:00000}",
                 Amount = amount
             });
-            return transactionId;
+            return id;
         }
 
         public void DeleteTransaction(Transaction transaction)
@@ -84,7 +84,6 @@ namespace App1.Models
 
         private void Rebalance(int index, int count = -1)
         {
-
             decimal balance = (index == 0 ? 0 : _transactions[index - 1].Balance);
             int endIndex = (count == -1 ? _transactions.Count : index + count);
             while (index < endIndex)
@@ -101,7 +100,11 @@ namespace App1.Models
         }
 
         private void When(TransactionCreated e)
-        { 
+        {
+            if (_lastTransactionId < e.Id)
+            {
+                _lastTransactionId = e.Id;
+            }
             var transaction = new Transaction()
             {
                 Id = e.Id,

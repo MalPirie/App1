@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="App1.Pages.TransactionListPage"
+             x:Name="page"
              Title="{Binding Account.Description}">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="+" Command="{Binding CreateTransactionCommand}" />
@@ -13,6 +14,12 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
+                        <ViewCell.ContextActions>
+                            <MenuItem Command="{Binding BindingContext.EditTransactionCommand, Source={x:Reference page}}" CommandParameter="{Binding .}"
+                                      Text="Edit" />
+                            <MenuItem Command="{Binding BindingContext.DeleteTransactionCommand, Source={x:Reference page}}" CommandParameter="{Binding .}"
+                                      Text="Delete" IsDestructive="True" />
+                        </ViewCell.ContextActions>
                         <StackLayout>
                             <StackLayout Orientation="Horizontal">
                                 <Label Text="{Binding Description}" />
