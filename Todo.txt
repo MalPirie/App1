@@ -1,4 +1,8 @@
-Icons for toolbar items
-Secondary toolbar items
+Icons for toolbar items in white and not black
 OnAppearing not always working
 Debug text does not appear
+Basic FAB working
+Move FAB move to corner
+Use absolute layout for listview and FAB
+
+https://alexdunn.org/2017/04/26/xamarin-controls-xamarin-forms-floatingactionbutton-including-ios/

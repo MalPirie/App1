@@ -4,7 +4,7 @@
              x:Class="App1.Pages.AccountListPage"
              Title="Accounts">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="+" Command="{Binding CreateAccountCommand}" />
+        <ToolbarItem Text="New account" Command="{Binding CreateAccountCommand}" Order="Primary" Icon="ic_add_black_18dp.png"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <ListView HasUnevenRows="True" ItemsSource="{Binding Accounts}" SelectedItem="{Binding SelectedAccount}" >
