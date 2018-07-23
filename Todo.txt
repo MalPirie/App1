@@ -1,8 +1,31 @@
 Icons for toolbar items in white and not black
-OnAppearing not always working
-Debug text does not appear
-Basic FAB working
-Move FAB move to corner
-Use absolute layout for listview and FAB
+Cannot set color of FAB to theme
 
-https://alexdunn.org/2017/04/26/xamarin-controls-xamarin-forms-floatingactionbutton-including-ios/
+Add recurring transactions
+	Drop down with list:
+		Does not repeat
+		Every day
+		Every week
+		Every month
+		Every year
+		Custom...
+	Custom
+		Repeat event [number] week (from day/week/month/year)
+		Day and Year
+			Ends
+				Never
+				On [date]
+				After [number] occurances
+		Week
+			Repeats on M T W T F S S { circles that can be selected }
+			Ends
+				Never
+				On [date]
+				After [number] occurances
+		Months	
+			Monthly on { current day of month, e.g. day 23}
+			Monthly on { counted day of week, e.g. fourth Monday }	
+			Ends
+				Never
+				On [date]
+				After [number] occurances

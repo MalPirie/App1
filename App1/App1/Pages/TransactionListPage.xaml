@@ -11,32 +11,41 @@
         <ToolbarItem Text="Delete account" Command="{Binding DeleteAccountCommand}" Order="Secondary" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
-            <ListView HasUnevenRows="True" ItemsSource="{Binding Transactions}" >
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <ViewCell.ContextActions>
-                                <MenuItem Command="{Binding BindingContext.EditTransactionCommand, Source={x:Reference page}}" CommandParameter="{Binding .}"
-                                      Text="Edit" Icon="ic_edit_black_18dp.png" />
-                                <MenuItem Command="{Binding BindingContext.DeleteTransactionCommand, Source={x:Reference page}}" CommandParameter="{Binding .}"
-                                      Text="Delete" IsDestructive="True" Icon="ic_delete_black_18dp.png" />
-                            </ViewCell.ContextActions>
-                            <StackLayout>
-                                <StackLayout Orientation="Horizontal">
-                                    <Label Text="{Binding Description}" />
-                                    <Label Text="{Binding Amount, StringFormat='{0:0.00}'}" HorizontalOptions="LayoutOptions.EndAndExpand" />
+        <RelativeLayout>
+            <StackLayout 
+                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+                <ListView HasUnevenRows="True" ItemsSource="{Binding Transactions}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ViewCell.ContextActions>
+                                    <MenuItem Command="{Binding BindingContext.EditTransactionCommand, Source={x:Reference page}}" CommandParameter="{Binding .}"
+                                          Text="Edit" Icon="ic_edit_black_18dp.png" />
+                                    <MenuItem Command="{Binding BindingContext.DeleteTransactionCommand, Source={x:Reference page}}" CommandParameter="{Binding .}"
+                                          Text="Delete" IsDestructive="True" Icon="ic_delete_black_18dp.png" />
+                                </ViewCell.ContextActions>
+                                <StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding Description}" />
+                                        <Label Text="{Binding Amount, StringFormat='{0:0.00}'}" HorizontalOptions="LayoutOptions.EndAndExpand" />
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding Timestamp, StringFormat='{0:yyyy-MM-dd}'}" />
+                                        <Label Text="{Binding Balance, StringFormat='{0:0.00}'}" HorizontalOptions="LayoutOptions.EndAndExpand" />
+                                    </StackLayout>
                                 </StackLayout>
-                                <StackLayout Orientation="Horizontal">
-                                    <Label Text="{Binding Timestamp, StringFormat='{0:yyyy-MM-dd}'}" />
-                                    <Label Text="{Binding Balance, StringFormat='{0:0.00}'}" HorizontalOptions="LayoutOptions.EndAndExpand" />
-                                </StackLayout>
-                            </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <local:MyFab HorizontalOptions="CenterAndExpand" WidthRequest="50" HeightRequest="50"  VerticalOptions="CenterAndExpand" Image="ic_add_black_18dp.png" ButtonColor="#03A9F4" Command="{Binding CreateTransactionCommand}"/>
-        </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.Footer>
+                        <BoxView HeightRequest="88" />
+                    </ListView.Footer>
+                </ListView>
+            </StackLayout>
+            <local:MyFab HorizontalOptions="CenterAndExpand" WidthRequest="56" HeightRequest="56"  Image="ic_add_black_18dp.png" ButtonColor="#03A9F4" Command="{Binding CreateTransactionCommand}"
+                         RelativeLayout.XConstraint = "{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=-72}" 
+                         RelativeLayout.YConstraint = "{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=-72}" />
+        </RelativeLayout>
     </ContentPage.Content>
 </ContentPage>

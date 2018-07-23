@@ -7,7 +7,7 @@
         <ToolbarItem Text="New account" Command="{Binding CreateAccountCommand}" Order="Primary" Icon="ic_add_black_18dp.png"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <ListView HasUnevenRows="True" ItemsSource="{Binding Accounts}" SelectedItem="{Binding SelectedAccount}" >
+        <ListView HasUnevenRows="True" ItemsSource="{Binding Accounts}" SelectedItem="{Binding SelectedAccount, Mode=TwoWay}" >
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>

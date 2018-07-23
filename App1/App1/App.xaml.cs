@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using App1.Models;
@@ -14,6 +15,8 @@ namespace App1
 		public App ()
 		{
 			InitializeComponent();
+
+            Debug.WriteLine("Hello");
 
             MainPage = NavigationService.Init(new AccountListPageModel(new AccountRepository()));
         }
